@@ -1,0 +1,39 @@
+<configuration debug="false">
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="LOG_HOME" value="/home/soho/logs"/>
+    <property name="SERVICE_NAME" value="eureka_server"/>
+
+    <!-- 生产环境. -->
+    <springProfile name="pro">
+        <logger name="org.springframework.web" level="WARN"/>
+        <logger name="org.springframework.boot.web" level="WARN"/>
+    </springProfile>
+
+    <!-- UAT、开发环境日志输出级别. -->
+    <springProfile name="dat,uat,dev">
+        <logger name="org.springframework.web" level="WARN"/>
+        <logger name="org.springframework.boot.web" level="WARN"/>
+    </springProfile>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/${SERVICE_NAME}/%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <MaxHistory>15</MaxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%25thread] %-5level [%-50logger{50}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 默认的日志输出级别为INFO -->
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

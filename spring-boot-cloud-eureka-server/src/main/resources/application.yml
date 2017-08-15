@@ -1,0 +1,12 @@
+server:
+  port: 8761
+  context-path: /serviceRegist
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://127.0.0.1/serviceRegist/eureka/
